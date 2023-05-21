@@ -1,0 +1,29 @@
+{
+    "name": "victory/module-delete-orders",
+    "description": "Magento 2 Delete Orders Extension",
+    "require": {
+        "php": "~7.1.0|~7.2.0|~7.3.0|~7.4.0|~8.1.0|~8.2.0"
+    },
+    "type": "magento2-module",
+    "version": "1.0.0",
+    "license": [
+        "OSL-3.0",
+        "AFL-3.0"
+    ],
+    "authors": [
+        {
+            "name": "QuangChien",
+            "email": "quangchien01.it@gmail.com",
+            "homepage": "https://www.facebook.com/quangchien01",
+            "role": "Magento Developer"
+        }
+    ],
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Victory\\DeleteOrders\\": ""
+        }
+    }
+}
