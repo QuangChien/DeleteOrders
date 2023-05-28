@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author QuangChien(Glorious Victory) <quangchien01.it@gmail.com>
+ * @copyright Copyright © 2023 QuangChien(Glorious Victory) <https://www.facebook.com/quangchien01>. All rights reserved.
+ */
+-->
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="default">
+        <job name="delete_orders_cronjob" instance="Victory\DeleteOrders\Cron\Order\Delete" method="execute">
+            <config_path>crontab/default/jobs/delete_orders_cronjob/schedule/cron_expr</config_path>
+        </job>
+    </group>
+</config>

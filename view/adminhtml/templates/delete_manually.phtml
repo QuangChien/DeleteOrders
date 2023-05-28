@@ -1,0 +1,39 @@
+<?php
+/**
+ * @author QuangChien(Glorious Victory) <quangchien01.it@gmail.com>
+ * @copyright Copyright © 2023 QuangChien(Glorious Victory) <https://www.facebook.com/quangchien01>. All rights reserved.
+ */
+
+use Victory\DeleteOrders\Block\Adminhtml\System\Config\Manually;
+/** @var Manually $block */
+
+?>
+
+<button id="gvdeleteorders_run_manually" title="Run Manually" type="button" class="primary">
+    <span><?= __('Delete Manually') ?></span>
+    </span>
+</button>
+<style>
+    button#gvdeleteorders_run_manually {
+        width: 94%;
+    }
+</style>
+
+<script>
+    require([
+        'jquery',
+        'Magento_Ui/js/modal/confirm',
+        'mage/translate',
+    ], function ($, confirm, $t) {
+        $("#gvdeleteorders_run_manually").on('click', function () {
+            confirm({
+                content: $t('Are you sure want to delete order(s) match with the above conditions?'),
+                actions: {
+                    confirm: function () {
+                        window.location.href = "<?= $block->getUrl('sales/delete/manually', ['_current' => true, '_use_rewrite' => true]) ?>";
+                    }
+                }
+            });
+        });
+    })
+</script>

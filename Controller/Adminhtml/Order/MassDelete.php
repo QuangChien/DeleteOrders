@@ -20,7 +20,6 @@ use Magento\Sales\Model\OrderRepository;
 use Magento\Sales\Model\ResourceModel\Order\CollectionFactory;
 use Magento\Ui\Component\MassAction\Filter;
 use Victory\DeleteOrders\Helper\Data;
-use Magento\Sales\Model\ResourceModel\OrderFactory;
 
 class MassDelete extends AbstractMassAction
 {
@@ -45,18 +44,20 @@ class MassDelete extends AbstractMassAction
     protected $_orderManagement;
 
     /**
-     * @var OrderFactory
+     * @param Context $context
+     * @param Filter $filter
+     * @param CollectionFactory $collectionFactory
+     * @param OrderRepository $orderRepository
+     * @param Data $helper
+     * @param OrderManagementInterface $orderManagement
      */
-    protected $orderResourceFactory;
-
     public function __construct(
         Context $context,
         Filter $filter,
         CollectionFactory $collectionFactory,
         OrderRepository $orderRepository,
         Data $helper,
-        OrderManagementInterface $orderManagement,
-        OrderFactory $orderResourceFactory
+        OrderManagementInterface $orderManagement
     ) {
         parent::__construct($context, $filter);
 
@@ -64,7 +65,6 @@ class MassDelete extends AbstractMassAction
         $this->orderRepository = $orderRepository;
         $this->helper = $helper;
         $this->_orderManagement = $orderManagement;
-        $this->orderResourceFactory = $orderResourceFactory;
     }
 
     /**
@@ -94,7 +94,7 @@ class MassDelete extends AbstractMassAction
                     $this->orderRepository->delete($order);
 
                     /** delete order data on grid report data related*/
-                    $this->deleteOrderItem($order->getId());
+                    $this->helper->deleteOrderItem($order->getId());
 
                     $deleted++;
                 } catch (Exception $e) {
@@ -115,33 +115,5 @@ class MassDelete extends AbstractMassAction
         $resultRedirect->setPath($this->getComponentRefererUrl());
 
         return $resultRedirect;
-    }
-
-    /**
-     * @param int $orderId
-     * @return void
-     */
-    public function deleteOrderItem($orderId)
-    {
-        $resource   = $this->orderResourceFactory->create();
-        $connection = $resource->getConnection();
-
-        /** delete invoice grid*/
-        $connection->delete(
-            $resource->getTable('sales_invoice_grid'),
-            $connection->quoteInto('order_id = ?', $orderId)
-        );
-
-        /** delete shipment grid */
-        $connection->delete(
-            $resource->getTable('sales_shipment_grid'),
-            $connection->quoteInto('order_id = ?', $orderId)
-        );
-
-        /** delete creditmemo grid */
-        $connection->delete(
-            $resource->getTable('sales_creditmemo_grid'),
-            $connection->quoteInto('order_id = ?', $orderId)
-        );
     }
 }

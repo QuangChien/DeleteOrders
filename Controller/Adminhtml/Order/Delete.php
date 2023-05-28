@@ -51,8 +51,8 @@ class Delete extends Order
                 /** delete order*/
                 $this->orderRepository->delete($order);
 
-                /** delete order data on grid report data related*/
-                $helper->deleteRecord($order->getId());
+                /** delete order data on grid */
+                $helper->deleteOrderItem($order->getId());
 
                 $this->messageManager->addSuccessMessage(__('The order has been deleted.'));
             } catch (Exception $e) {
