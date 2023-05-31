@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author QuangChien(Glorious Victory) <quangchien01.it@gmail.com>
+ * @copyright Copyright © 2023 QuangChien(Glorious Victory) <https://www.facebook.com/quangchien01>. All rights reserved.
+ */
+-->
+
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+    <route url="/V1/orderLog/:logId" method="GET">
+        <service class="Victory\DeleteOrders\Api\LogRepositoryInterface" method="getById"/>
+        <resources>
+            <resource ref="Magento_Sales::sales_order"/>
+        </resources>
+    </route>
+    <route url="/V1/orderLog/search" method="GET">
+        <service class="Victory\DeleteOrders\Api\LogRepositoryInterface" method="getList"/>
+        <resources>
+            <resource ref="Magento_Sales::sales_order"/>
+        </resources>
+    </route>
+    <route url="/V1/orderLog" method="POST">
+        <service class="Victory\DeleteOrders\Api\LogRepositoryInterface" method="save"/>
+        <resources>
+            <resource ref="Magento_Sales::sales_order"/>
+        </resources>
+    </route>
+    <route url="/V1/orderLog/:logId" method="PUT">
+        <service class="Victory\DeleteOrders\Api\LogRepositoryInterface" method="save"/>
+        <resources>
+            <resource ref="Magento_Sales::sales_order"/>
+        </resources>
+    </route>
+    <route url="/V1/orderLog/:logId" method="DELETE">
+        <service class="Victory\DeleteOrders\Api\LogRepositoryInterface" method="deleteById"/>
+        <resources>
+            <resource ref="Magento_Sales::sales_order"/>
+        </resources>
+    </route>
+</routes>

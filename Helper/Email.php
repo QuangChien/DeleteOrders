@@ -37,16 +37,11 @@ class Email
     protected $logger;
 
     /**
-     * @param Context $context
-     * @param ObjectManagerInterface $objectManager
-     * @param StoreManagerInterface $storeManager
      * @param TransportBuilder $transportBuilder
      * @param Data $helperData
+     * @param LoggerInterface $logger
      */
     public function __construct(
-        Context $context,
-        ObjectManagerInterface $objectManager,
-        StoreManagerInterface $storeManager,
         TransportBuilder $transportBuilder,
         Data $helperData,
         LoggerInterface $logger
@@ -54,7 +49,6 @@ class Email
         $this->transportBuilder = $transportBuilder;
         $this->helperData = $helperData;
         $this->logger = $logger;
-        parent::__construct($context, $objectManager, $storeManager);
     }
 
     /**

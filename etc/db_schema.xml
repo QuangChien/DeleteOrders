@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author QuangChien(Glorious Victory) <quangchien01.it@gmail.com>
+ * @copyright Copyright © 2023 QuangChien(Glorious Victory) <https://www.facebook.com/quangchien01>. All rights reserved.
+ */
+-->
+
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="gv_sales_order_delete_log" resource="default" engine="innodb" comment="Sales Order Delete Log">
+        <column xsi:type="smallint" name="entity_id" padding="6" unsigned="false" nullable="false" identity="true"
+                comment="Entity ID"/>
+        <column xsi:type="varchar" name="order_id" nullable="false" comment="Order ID"/>
+        <column xsi:type="varchar" name="admin_user" nullable="false" comment="Admin User"/>
+        <column xsi:type="smallint" name="delete_type" comment="Delete Type" default="1"/>
+        <column xsi:type="timestamp" name="deleted_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP"
+                comment="Time Deleted At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+    </table>
+</schema>

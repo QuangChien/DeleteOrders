@@ -31,7 +31,7 @@ class MassAction extends \Magento\Ui\Component\MassAction
      * @param ContextInterface $context
      * @param Data $helper
      * @param AuthorizationInterface $authorization
-     * @param $components
+     * @param array $components
      * @param array $data
      */
     public function __construct(
