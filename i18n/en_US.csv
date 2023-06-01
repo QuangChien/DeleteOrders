@@ -35,3 +35,5 @@
 "Email Template","Email Template"
 "Send To","Send To"
 "We can\'t save the cron expression. %1","We can\'t save the cron expression. %1"
+"Could not save order log: %1","Could not save order log: %1"
+"Cannot delete order log with id %1","Cannot delete order log with id %1"

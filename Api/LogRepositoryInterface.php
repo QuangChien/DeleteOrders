@@ -14,7 +14,7 @@ interface LogRepositoryInterface
 {
     /**
      * @param LogInterface $log
-     * @return LogInterface $log
+     * @return LogInterface
      * @throws LocalizedException
      */
     public function save(LogInterface $log);
