@@ -13,7 +13,9 @@
                     <resource id="Magento_Sales::sales_operation">
                         <resource id="Magento_Sales::sales_order">
                             <resource id="Magento_Sales::actions">
-                                <resource id="Magento_Sales::delete" title="Delete" translate="title" sortOrder="80"/>
+                                <resource id="Magento_Sales::delete" title="Delete" translate="title" sortOrder="10"/>
+                                <resource id="Victory_DeleteOrders::log_list" title="Log View" translate="title" sortOrder="20"/>
+                                <resource id="Victory_DeleteOrders::log_delete" title="Log Delete" translate="title" sortOrder="30"/>
                             </resource>
                         </resource>
                     </resource>

@@ -15,4 +15,22 @@
             </argument>
         </arguments>
     </type>
+
+    <preference for="Victory\DeleteOrders\Api\Data\LogSearchResultsInterface" type="Magento\Framework\Api\SearchResults" />
+    <preference for="Victory\DeleteOrders\Api\LogRepositoryInterface" type="Victory\DeleteOrders\Model\LogRepository" />
+    <preference for="Victory\DeleteOrders\Api\Data\LogInterface" type="Victory\DeleteOrders\Model\Log" />
+
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="sales_order_log_listing_data_source" xsi:type="string">Victory\DeleteOrders\Model\ResourceModel\Log\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <virtualType name="Victory\DeleteOrders\Model\ResourceModel\Log\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">gv_sales_order_delete_log</argument>
+            <argument name="resourceModel" xsi:type="string">Victory\DeleteOrders\Model\ResourceModel\Log</argument>
+        </arguments>
+    </virtualType>
 </config>

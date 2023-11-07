@@ -16,8 +16,12 @@ use Magento\Store\Model\Store;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Backend\App\ConfigInterface;
 use Magento\Sales\Model\ResourceModel\OrderFactory;
-use Mageplaza\DeleteOrders\Model\Config\Source\Country;
+use Victory\DeleteOrders\Model\Config\Source\Country;
 use Magento\Sales\Model\ResourceModel\Order\CollectionFactory;
+use Magento\Sales\Model\OrderFactory as OrderModelFactory;
+use Magento\User\Model\UserFactory;
+use Victory\DeleteOrders\Model\LogFactory;
+use Magento\Backend\Model\Auth\Session;
 
 class Data extends AbstractHelper {
 
@@ -57,6 +61,23 @@ class Data extends AbstractHelper {
     protected $orderCollectionFactory;
 
     /**
+     * @var OrderModelFactory
+     */
+    protected $orderFactory;
+
+    /**
+     * @var UserFactory
+     */
+    protected $userFactory;
+
+    /**
+     * @var LogFactory
+     */
+    protected $logFactory;
+
+    protected $authSession;
+
+    /**
      * @var array
      */
     protected $isArea = [];
@@ -66,6 +87,12 @@ class Data extends AbstractHelper {
      * @param StoreManagerInterface $storeManager
      * @param ConfigInterface $backendConfig
      * @param State $state
+     * @param ProductMetadataInterface $productMetadata
+     * @param OrderFactory $orderResourceFactory
+     * @param CollectionFactory $orderCollectionFactory
+     * @param OrderModelFactory $orderFactory
+     * @param UserFactory $userFactory
+     * @param LogFactory $logFactory
      */
     public function __construct
     (
@@ -75,7 +102,11 @@ class Data extends AbstractHelper {
         State $state,
         ProductMetadataInterface $productMetadata,
         OrderFactory $orderResourceFactory,
-        CollectionFactory $orderCollectionFactory
+        CollectionFactory $orderCollectionFactory,
+        OrderModelFactory $orderFactory,
+        UserFactory $userFactory,
+        LogFactory $logFactory,
+        Session $authSession
     )
     {
         $this->storeManager = $storeManager;
@@ -84,7 +115,30 @@ class Data extends AbstractHelper {
         $this->productMetadata = $productMetadata;
         $this->orderResourceFactory = $orderResourceFactory;
         $this->orderCollectionFactory = $orderCollectionFactory;
+        $this->orderFactory = $orderFactory;
+        $this->userFactory = $userFactory;
+        $this->logFactory = $logFactory;
+        $this->authSession = $authSession;
         parent::__construct($context);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUserId()
+    {
+        return $this->authSession->getUser()->getId();
+    }
+
+    /**
+     * @param $data
+     * @return void
+     */
+    public function insertLog($data)
+    {
+        $log = $this->logFactory->create();
+        $log->setData($data);
+        $log->save();
     }
 
     /**
@@ -285,5 +339,31 @@ class Data extends AbstractHelper {
     public function getCountriesConfig($storeId = null)
     {
         return explode(',', $this->getScheduleConfig('specific_country', $storeId) ?? "");
+    }
+
+    /**
+     * @param $userId
+     * @return string
+     */
+    public function getAdminUserName($userId)
+    {
+        $adminUser = $this->userFactory->create()->load($userId);
+        if (!$adminUser->getId()) {
+            return '';
+        }
+        return (string)$adminUser->getUserName();
+    }
+
+    /**
+     * @param $orderId
+     * @return float|string|null
+     */
+    public function getOrderIncrementId($orderId)
+    {
+        $order = $this->orderFactory->create()->load($orderId);
+        if($order->getIncrementId()) {
+            return '#'.$order->getIncrementId();
+        }
+        return $order->getIncrementId();
     }
 }

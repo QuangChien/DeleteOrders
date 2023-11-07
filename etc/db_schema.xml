@@ -11,9 +11,17 @@
     <table name="gv_sales_order_delete_log" resource="default" engine="innodb" comment="Sales Order Delete Log">
         <column xsi:type="smallint" name="entity_id" padding="6" unsigned="false" nullable="false" identity="true"
                 comment="Entity ID"/>
-        <column xsi:type="varchar" name="order_id" nullable="false" comment="Order ID"/>
-        <column xsi:type="varchar" name="admin_user" nullable="false" comment="Admin User"/>
+        <column xsi:type="varchar" name="increment_id" nullable="false" comment="Increment ID"/>
+        <column xsi:type="int" name="admin_user" nullable="false" comment="Admin User"/>
         <column xsi:type="smallint" name="delete_type" comment="Delete Type" default="1"/>
+        <column xsi:type="varchar" name="customer_email" nullable="true" length="128" comment="Customer Email"/>
+        <column xsi:type="varchar" name="customer_firstname" nullable="true" length="128" comment="Customer Firstname"/>
+        <column xsi:type="varchar" name="customer_lastname" nullable="true" length="128" comment="Customer Lastname"/>
+        <column xsi:type="timestamp" name="order_date" nullable="true" comment="Order Date"/>
+        <column xsi:type="varchar" name="order_status" nullable="true" length="32" comment="Order Status"/>
+        <column xsi:type="decimal" name="subtotal" scale="4" precision="20" unsigned="false" nullable="true" comment="Subtotal"/>
+        <column xsi:type="decimal" name="grand_total" scale="4" precision="20" unsigned="false" nullable="true" comment="Grand Total"/>
+        <column xsi:type="decimal" name="total_due" scale="4" precision="20" unsigned="false" nullable="true" comment="Total Due"/>
         <column xsi:type="timestamp" name="deleted_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP"
                 comment="Time Deleted At"/>
         <constraint xsi:type="primary" referenceId="PRIMARY">

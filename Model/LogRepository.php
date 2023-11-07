@@ -14,6 +14,11 @@ use Victory\DeleteOrders\Api\Data\LogInterface;
 use Victory\DeleteOrders\Model\ResourceModel\Log;
 use Victory\DeleteOrders\Model\LogFactory;
 use Magento\Framework\Api\SearchCriteriaInterface;
+use Magento\Framework\Api\Search\FilterGroup;
+use Victory\DeleteOrders\Model\ResourceModel\Log\Collection;
+use Victory\DeleteOrders\Model\ResourceModel\Log\CollectionFactory;
+use Victory\DeleteOrders\Api\Data\LogSearchResultsInterfaceFactory;
+use Magento\Framework\Api\SortOrder;
 
 class LogRepository implements LogRepositoryInterface
 {
@@ -28,21 +33,38 @@ class LogRepository implements LogRepositoryInterface
     protected $logFactory;
 
     /**
+     * @var LogSearchResultsInterfaceFactory
+     */
+    protected $logSearchResultsInterfaceFactory;
+
+    /**
+     * @var CollectionFactory
+     */
+    protected $logCollectionFactory;
+
+    /**
      * @param Log $logResource
-     * @param LogFactory $logFactory
+     * @param \Victory\DeleteOrders\Model\LogFactory $logFactory
+     * @param LogSearchResultsInterfaceFactory $logSearchResultsInterfaceFactory
+     * @param CollectionFactory $collectionFactory
      */
     public function __construct
     (
         Log $logResource,
-        LogFactory $logFactory
+        LogFactory $logFactory,
+        LogSearchResultsInterfaceFactory $logSearchResultsInterfaceFactory,
+        CollectionFactory $collectionFactory
     )
     {
         $this->logResource = $logResource;
         $this->logFactory = $logFactory;
+        $this->logSearchResultsInterfaceFactory = $logSearchResultsInterfaceFactory;
+        $this->logCollectionFactory = $collectionFactory;
     }
 
     /**
      * @inheirtDoc
+     * @throws NoSuchEntityException
      */
     public function save(LogInterface $log)
     {
@@ -113,9 +135,52 @@ class LogRepository implements LogRepositoryInterface
 
     /**
      * @inheirtDoc
+     * @throws NoSuchEntityException
      */
     public function getList(SearchCriteriaInterface $searchCriteria)
     {
-        //updating...
+        $searchResults = $this->logSearchResultsInterfaceFactory->create();
+        $searchResults->setSearchCriteria($searchCriteria);
+        /** @var Collection $collection */
+        $collection = $this->logCollectionFactory->create();
+
+        foreach ($searchCriteria->getFilterGroups() as $group) {
+            $this->addFilterGroupToCollection($group, $collection);
+        }
+
+        $searchResults->setTotalCount($collection->getSize());
+        $sortOrders = $searchCriteria->getSortOrders();
+        if ($sortOrders) {
+            /** @var SortOrder $sortOrder */
+            foreach ($searchCriteria->getSortOrders() as $sortOrder) {
+                $collection->addOrder(
+                    $sortOrder->getField(),
+                    ($sortOrder->getDirection() == SortOrder::SORT_ASC) ? 'ASC' : 'DESC'
+                );
+            }
+        }
+        $collection->setCurPage($searchCriteria->getCurrentPage());
+        $collection->setPageSize($searchCriteria->getPageSize());
+        $logs = [];
+
+        foreach ($collection as $log) {
+            $logs[] = $this->getById($log->getId());
+        }
+        $searchResults->setItems($log);
+        return $searchResults;
+    }
+
+    /**
+     * @param FilterGroup $filterGroup
+     * @param Collection $collection
+     * @return void
+     */
+    protected function addFilterGroupToCollection(
+        FilterGroup $filterGroup,
+        Collection $collection
+    ) {
+        foreach ($filterGroup->getFilters() as $filter) {
+            $collection->addFieldToFilter($filter->getField(), $filter->getValue());
+        }
     }
 }

@@ -11,7 +11,7 @@ use Magento\Framework\Option\ArrayInterface;
 class Country implements ArrayInterface
 {
     const SPECIFIC = '1';
-    const ALL      = '2';
+    const ALL = '2';
 
     /**
      * @return array[]

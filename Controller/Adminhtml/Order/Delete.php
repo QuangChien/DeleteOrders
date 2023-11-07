@@ -54,6 +54,21 @@ class Delete extends Order
                 /** delete order data on grid */
                 $helper->deleteOrderItem($order->getId());
 
+                /** insert log */
+                $helper->insertLog([
+                    'admin_user' => $helper->getUserId(),
+                    'delete_type' => 1, //manually
+                    'increment_id' => $order->getIncrementId(),
+                    'customer_email' => $order->getCustomerEmail(),
+                    'customer_firstname' => $order->getCustomerFirstname(),
+                    'customer_lastname' => $order->getCustomerLastname(),
+                    'order_date' => $order->getCreatedAt(),
+                    'order_status' =>$order->getStatus(),
+                    'subtotal' => $order->getSubtotal(),
+                    'grand_total' => $order->getGrandTotal(),
+                    'total_due' => $order->getTotalDue()
+                ]);
+
                 $this->messageManager->addSuccessMessage(__('The order has been deleted.'));
             } catch (Exception $e) {
                 $this->messageManager->addErrorMessage($e->getMessage());

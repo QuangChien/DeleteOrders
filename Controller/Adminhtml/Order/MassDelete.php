@@ -96,6 +96,21 @@ class MassDelete extends AbstractMassAction
                     /** delete order data on grid report data related*/
                     $this->helper->deleteOrderItem($order->getId());
 
+                    /** insert log */
+                    $this->helper->insertLog([
+                        'admin_user' => $this->helper->getUserId(),
+                        'delete_type' => 1, //manually
+                        'increment_id' => $order->getIncrementId(),
+                        'customer_email' => $order->getCustomerEmail(),
+                        'customer_firstname' => $order->getCustomerFirstname(),
+                        'customer_lastname' => $order->getCustomerLastname(),
+                        'order_date' => $order->getCreatedAt(),
+                        'order_status' =>$order->getStatus(),
+                        'subtotal' => $order->getSubtotal(),
+                        'grand_total' => $order->getGrandTotal(),
+                        'total_due' => $order->getTotalDue()
+                    ]);
+
                     $deleted++;
                 } catch (Exception $e) {
                     $this->messageManager->addErrorMessage(__(

@@ -99,6 +99,21 @@ class Manually extends Action
                     $this->orderRepository->delete($order);
 
                     $this->helperData->deleteOrderItem($order->getId());
+
+                    /** inset log */
+                    $this->helperData->insertLog([
+                        'admin_user' => $this->helperData->getUserId(),
+                        'delete_type' => 1, //manually
+                        'increment_id' => $order->getIncrementId(),
+                        'customer_email' => $order->getCustomerEmail(),
+                        'customer_firstname' => $order->getCustomerFirstname(),
+                        'customer_lastname' => $order->getCustomerLastname(),
+                        'order_date' => $order->getCreatedAt(),
+                        'order_status' =>$order->getStatus(),
+                        'subtotal' => $order->getSubtotal(),
+                        'grand_total' => $order->getGrandTotal(),
+                        'total_due' => $order->getTotalDue()
+                    ]);
                     $successDelete++;
                 } catch (Exception $e) {
                     $errorOrders[$order->getId()] = $order->getIncrementId();

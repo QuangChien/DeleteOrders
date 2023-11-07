@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author QuangChien(Glorious Victory) <quangchien01.it@gmail.com>
+ * @copyright Copyright © 2023 QuangChien(Glorious Victory) <https://www.facebook.com/quangchien01>. All rights reserved.
+ */
+-->
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Victory_DeleteOrders::log_delete" title="Order Delete Logs" translate="title" module="Victory_DeleteOrders" sortOrder="150"
+             parent="Magento_Sales::sales_operation" action="sales/order/log" resource="Victory_DeleteOrders::log_list" dependsOnConfig="delete_orders/general/enabled"/>
+    </menu>
+</config>

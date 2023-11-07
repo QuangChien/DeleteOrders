@@ -62,7 +62,7 @@
                 <field id="country" translate="label comment" type="select" sortOrder="50" showInDefault="1"
                        showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Shipping Countries</label>
-                    <source_model>Mageplaza\DeleteOrders\Model\Config\Source\Country</source_model>
+                    <source_model>Victory\DeleteOrders\Model\Config\Source\Country</source_model>
                 </field>
                 <field id="specific_country" translate="label comment" type="multiselect" sortOrder="60"
                        showInDefault="1" showInWebsite="1" canRestore="1">
